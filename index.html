@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> 김영성 졸업 기념 사진전 </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+        }
+
+        /* 왼쪽 메뉴 스타일 */
+        .menu {
+            width: 200px;
+            background-color: #333;
+            color: white;
+            height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+
+        .menu a {
+            display: block;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        .menu a:hover {
+            background-color: #444;
+        }
+
+        /* 메인 콘텐츠 스타일 */
+        .content {
+            flex: 1;
+            margin-left: 220px; /* 메뉴 크기 + 여백 */
+            padding: 20px;
+        }
+
+        /* 갤러리 스타일은 기존 코드 그대로 유지 */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .gallery-item {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .gallery-item img, .gallery-item video {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-bottom: 1px solid #ddd;
+            loading: lazy;
+        }
+
+        .gallery-item p {
+            padding: 15px;
+            margin: 0;
+        }
+
+        /* 방명록 스타일 */
+        .guestbook-form {
+            display: flex;
+            flex-direction: column;
+            max-width: 400px;
+            margin: 20px 0;
+        }
+
+        .guestbook-form label {
+            margin-bottom: 5px;
+        }
+
+        .guestbook-form input, .guestbook-form textarea {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .guestbook-form button {
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .guestbook-form button:hover {
+            background-color: #444;
+        }
+
+        /* 방명록 목록 스타일 */
+        .guestbook-entries {
+            margin-top: 20px;
+            max-width: 400px;
+        }
+
+        .guestbook-entry {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 왼쪽 메뉴 -->
+    <div class="menu">
+        <h3>메뉴</h3>
+        <a href="#" onclick="showContent('gallery')">사진전</a>
+        <a href="#" onclick="showContent('guestbook')">방명록</a>
+    </div>
+
+    <!-- 메인 콘텐츠 -->
+    <div class="content" id="content">
+        <!-- 사진전 콘텐츠 -->
+        <div id="gallery" class="content-section">
+            <h1> 경영학과 17학번 김영성의 졸업을 축하합니다. </h1>
+            <div class="gallery">
+                <div class="gallery-item">
+                    <img src="ys1.jpg" alt="사진 1">
+                    <p> 2017년 새내기 영성이의 귀여운 모습입니다.</p>
+                </div>
+                <div class="gallery-item">
+                    <img src="ys2.jpg" alt="사진 2">
+                    <p> 영성이의 증명사진 입니다.</p>
+                </div>
+                <div class="gallery-item">
+                    <img src="ys3.jpg" alt="사진 3">
+                    <p> 매혹적인 포즈를 하는 영성이의 사진입니다.</p>
+                </div>        
+                <div class="gallery-item">
+                    <video controls>
+                        <source src="ysvideo1.mp4" type="video/mp4">
+                        <source src="ysvideo1.webm" type="video/webm">
+                        동영상을 재생할 수 없습니다.
+                    </video>
+                    <p>의자를 들고 프로레슬러처럼 포즈를 취하는 영성이의 영상입니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 방명록 콘텐츠 -->
+        <div id="guestbook" class="content-section" style="display: none;">
+            <h1>방명록</h1>
+            <form class="guestbook-form" onsubmit="addGuestbookEntry(event)">
+                <label for="name">이름:</label>
+                <input type="text" id="name" required>
+                
+                <label for="relation">관계:</label>
+                <input type="text" id="relation" required>
+
+                <label for="message">메시지:</label>
+                <textarea id="message" rows="4" required></textarea>
+
+                <button type="submit">작성</button>
+            </form>
+
+            <div class="guestbook-entries" id="guestbook-entries">
+                <!-- 방명록 항목이 여기에 추가됩니다 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 콘텐츠 표시 함수
+        function showContent(section) {
+            // 모든 섹션을 숨김
+            document.querySelectorAll('.content-section').forEach(function(content) {
+                content.style.display = 'none';
+            });
+            // 선택한 섹션만 표시
+            document.getElementById(section).style.display = 'block';
+        }
+
+        // 방명록 항목 추가 함수
+        function addGuestbookEntry(event) {
+            event.preventDefault();
+
+            // 입력 값 가져오기
+            const name = document.getElementById('name').value;
+            const relation = document.getElementById('relation').value;
+            const message = document.getElementById('message').value;
+
+            // 새로운 방명록 항목 생성
+            const entry = document.createElement('div');
+            entry.className = 'guestbook-entry';
+            entry.innerHTML = `<strong>${name} (${relation})</strong><p>${message}</p>`;
+
+            // 방명록 목록에 추가
+            document.getElementById('guestbook-entries').appendChild(entry);
+
+            // 입력 필드 초기화
+            document.getElementById('name').value = '';
+            document.getElementById('relation').value = '';
+            document.getElementById('message').value = '';
+        }
+    </script>
+</body>
+</html>
